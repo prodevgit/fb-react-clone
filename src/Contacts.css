@@ -1,0 +1,15 @@
+.contacts {
+    padding: 25px 10px;
+    flex: 0.33;
+}
+
+.contacts__options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.contacts__option {
+    display: flex;
+    align-items: center;
+}
