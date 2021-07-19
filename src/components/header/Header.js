@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect,useState} from 'react'
 import logo from './logo.svg'
 import SearchIcon from '@material-ui/icons/Search';
 import HomeIcon from '@material-ui/icons/Home';
@@ -12,6 +12,8 @@ import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import AddIcon from '@material-ui/icons/Add';
 import ForumIcon from '@material-ui/icons/Forum';
 import './Header.css'
+import apiService from '../../services/api/ApiService';
+import history from '../../utilities/history';
 
 const useStyles = makeStyles(theme => ({
     blueHoverFocus: {
@@ -25,6 +27,21 @@ const useStyles = makeStyles(theme => ({
 
 function Header() {
     const classes = useStyles();
+    const [user, setUser] = useState([]);
+
+    useEffect(() => {
+        _getUser();
+    }, []);
+
+    function _getUser() {
+        apiService.userApi.getUser().then((res) => {
+            if(res.user)
+                setUser(res.user);
+            else
+                history.push('auth/login')
+        })
+      }
+
     return (
         <div className="header">
             <div className="header__left">
@@ -66,7 +83,7 @@ function Header() {
                     <IconButton>
                         <Avatar src="https://avatars.githubusercontent.com/u/28591018?v=4"/>
                     </IconButton>
-                    <h4>Dev</h4>
+                    <h4>{user.firstname}</h4>
                 </div>
                 <IconButton>
                     <AddIcon/>
