@@ -1,6 +1,6 @@
-.app {
+.home {
     background-color: #f1f2f5;
 }
-.app__body {
+.home__body {
     display: flex;
 }
