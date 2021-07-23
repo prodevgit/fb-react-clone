@@ -1,7 +1,7 @@
-import './Auth.css';
+import './AuthLogin.css';
 import Login from '../components/auth/Login';
 
-function Auth() {
+function AuthLogin() {
   return (
     <div className="auth">
         <Login/>
@@ -9,4 +9,4 @@ function Auth() {
   );
 }
 
-export default Auth;
+export default AuthLogin;

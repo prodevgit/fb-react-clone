@@ -30,25 +30,28 @@ class AuthService {
           .catch(handleError);
     }
 
+    register(auth_data){
+      return axios 
+        .post(`${this.BASE_URL}/auth/create`,auth_data) 
+        .then((res) => {
+            if(res.data.key){
+              this.authToken = res.data.key
+              localStorage.setItem('token', this.authToken);
+              this.authenticate()
+              history.push('/')
+            }
+            return res;
+        })
+        .catch(handleError);
+  }
+
     logout() {
       this.isAuthenticated = false
     }
 
   }
 
-  function PrivateRoute({ children, ...rest }) {
-    return (
-      <Route {...rest} render={({ location }) => {
-        return this.isAuthenticated === true
-          ? children
-          : <Redirect to={{
-              pathname: '/auth/login',
-              state: { from: location }
-            }} />
-      }} />
-    )
-  }
-
+  
 
   const authService = new AuthService()
 

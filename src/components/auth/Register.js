@@ -1,6 +1,36 @@
-import React from "react";
-
+import React, { useState }  from "react";
+import { Link } from "react-router-dom";
+import authService from "../../services/auth/AuthService";
 export default function Register() {
+
+  const [values, setValues] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: ""
+  });
+
+  const set = (name) => {
+    return ({ target: { value } }) => {
+      setValues((oldValues) => ({ ...oldValues, [name]: value }));
+    };
+  };
+
+  function _register(auth_data) {
+    return authService.register(auth_data);
+  }
+
+  function onSubmit(event){
+    event.preventDefault();
+    _register(values).then((res) => {
+      setValues({
+        first_name: '', last_name: '', email: '', password: '' 
+      });
+    }).catch((error) => {
+      alert(`Registration failed! ${error.message}`);
+    });    
+  }
+
   return (
     <>
       <div className="container mx-auto px-4 h-full">
@@ -21,7 +51,7 @@ export default function Register() {
                     <img
                       alt="..."
                       className="w-5 mr-1"
-                      src={require("assets/img/github.svg").default}
+                      src={require("../../assets/img/github.svg").default}
                     />
                     Github
                   </button>
@@ -32,7 +62,7 @@ export default function Register() {
                     <img
                       alt="..."
                       className="w-5 mr-1"
-                      src={require("assets/img/google.svg").default}
+                      src={require("../../assets/img/google.svg").default}
                     />
                     Google
                   </button>
@@ -43,18 +73,36 @@ export default function Register() {
                 <div className="text-blueGray-400 text-center mb-3 font-bold">
                   <small>Or sign up with credentials</small>
                 </div>
-                <form>
+                <form onSubmit={onSubmit}>
                   <div className="relative w-full mb-3">
                     <label
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                       htmlFor="grid-password"
                     >
-                      Name
+                      First Name
                     </label>
                     <input
-                      type="email"
+                      value={values.first_name}
+                      type="text"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Name"
+                      onChange={set("first_name")}
+                    />
+                  </div>
+
+                  <div className="relative w-full mb-3">
+                    <label
+                      className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      htmlFor="grid-password"
+                    >
+                      Last Name
+                    </label>
+                    <input
+                      value={values.last_name}
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      placeholder="Name"
+                      onChange={set("last_name")}
                     />
                   </div>
 
@@ -66,9 +114,11 @@ export default function Register() {
                       Email
                     </label>
                     <input
+                      value={values.email}
                       type="email"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
+                      onChange={set("email")}
                     />
                   </div>
 
@@ -80,9 +130,11 @@ export default function Register() {
                       Password
                     </label>
                     <input
+                      value={values.password}
                       type="password"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Password"
+                      onChange={set("password")}
                     />
                   </div>
 
@@ -109,7 +161,7 @@ export default function Register() {
                   <div className="text-center mt-6">
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                      type="button"
+                      type="submit"
                     >
                       Create Account
                     </button>
